@@ -1,0 +1,137 @@
+﻿@{
+    string Ctgr_num=Request["Ctgr_num"];
+
+    List<string> Ident_GP = new List<string>();
+    List<string> Naimenovanie_GP = new List<string>();
+    List<string> Price_GP  = new List<string>(); 
+    List<string> Category_GP  = new List<string>(); 
+    List<string> Opisanie_GP  = new List<string>(); 
+    List<string> Picture_GP  = new List<string>();   
+
+    var db = Database.Open("zooopt72_v1");
+    
+    var bb1 = db.Query("SELECT * FROM Stocks"); 
+   
+    if (Int32.Parse(Ctgr_num)>0 && Int32.Parse(Ctgr_num)<6){
+        bb1=db.Query("SELECT * FROM Stocks WHERE Catecory='"+Ctgr_num+"'");   
+    }
+     
+    foreach (var b in bb1)
+    {
+        Ident_GP.Add(b.Ident.ToString());
+        Naimenovanie_GP.Add(b.ProductName.ToString());
+        Price_GP.Add(b.Price.ToString());
+        Category_GP.Add(b.Catecory.ToString());
+        Opisanie_GP.Add(b.Description.ToString()); 
+        Picture_GP.Add("image//Stocks_pic//"+b.ImagePatch.ToString()); 
+    }
+
+    int num_el = Naimenovanie_GP.Count;
+
+    string naim_category="";
+
+    switch (Ctgr_num)
+            {
+                case "1":
+                    naim_category = "Корма и витамины ";
+                    break;
+                case "2":
+                    naim_category = "Средства ухода и гигиены ";
+                    break;
+                case "3":
+                    naim_category = "Когтеточки и Игрушки ";
+                    break;
+                case "4":
+                    naim_category = "Наполнители и Совочки ";
+                    break;
+                case "5":
+                    naim_category = "Миски и Переноски ";
+                    break;
+
+                default:
+                    naim_category = "Все товары ";
+                    break;
+            }
+
+}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@naim_category: Выбирайте! Радуйте кису :)</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/3-col-portfolio.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    
+    <!-- Page  Content -->
+    <div class="container">
+  
+        <!-- Page Header -->
+        <div class="row">
+            <a class="lead" href="Page">На Главную</a>
+            <div class="col-lg-12">
+                <h1 class="page-header">@naim_category
+                    <small> Заказывайте: 8(950) 480-7499, bio@zooOpt72.ru 
+                        <a href="mailto:bio@zooOpt72.ru?subject=Сайт%20Zoo%20Opt72"> Напишите нам</a>
+                    </small>
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Projects Row -->
+        <div class="row">
+            @for (var i=0;i<num_el;i++){
+                <div class="col-md-4 portfolio-item">
+                    <a href="Page3_tovar.cshtml?Idnt=@Ident_GP[i]">
+                        <img class="img-responsive" src=@Picture_GP[i] alt="ZooOpt72.ru, телефон: 8 (950)480-7499, bio@zooOpt72.ru">
+                    </a>
+                    <h3>
+                        <a href="Page3_tovar.cshtml?Idnt=@Ident_GP[i]">@Naimenovanie_GP[i]</a> @Price_GP[i] р. 
+                    </h3>
+                    <p>@(String.Format("{0,300} . . . ..",Opisanie_GP[i]))</p>
+               
+                </div>
+            }
+        </div> 
+  
+        <!-- /.row -->
+        <h2 class="page-header">@naim_category
+                    <small> Заказывайте: 8(950) 480-7499, bio@zooOpt72.ru 
+                        <a href="mailto:bio@zooOpt72.ru?subject=Сайт%20Zoo%20Opt72"> Напишите нам</a>
+                    </small>
+                </h2>
+        @RenderPage("footer.cshtml")  
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

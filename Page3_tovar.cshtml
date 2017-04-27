@@ -1,0 +1,105 @@
+﻿@{
+    string Idnt=Request["Idnt"];
+      
+    string Ident_GP = "Товар не найден :(";  
+    string Naimenovanie_GP = "Товар не найден :(";  
+    string Price_GP  = "Товар не найден :(";  
+    string Category_GP  =  "Товар не найден :(";  
+    string Opisanie_GP  = "Товар не найден :(";  
+    string Picture_GP  = "Товар не найден :(";   
+
+    var db = Database.Open("zooopt72_v1");
+    
+    var bb1=db.Query("SELECT * FROM Stocks WHERE Ident='"+Idnt+"'");   
+         
+    foreach (var b in bb1)
+    {
+        Ident_GP=b.Ident.ToString();
+        Naimenovanie_GP=b.ProductName.ToString();
+        Price_GP=b.Price.ToString();
+        Category_GP=b.Catecory.ToString();
+        Opisanie_GP=b.Description.ToString(); 
+        Picture_GP="image//Stocks_pic//"+b.ImagePatch.ToString(); 
+    }  
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Хороший выбор :)</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/shop-item.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+      
+        
+        <div class="row">
+            <a class="lead" href="Page">На Главную</a>
+            <div class="col-lg-12">
+                <h1 class="page-header">@Naimenovanie_GP
+                    <small> Заказывайте: 8(950) 480-7499, bio@zooOpt72.ru 
+                        <a href="mailto:bio@zooOpt72.ru?subject=Сайт%20Zoo%20Opt72"> Напишите нам</a>
+                    </small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <div class="col-md-9">
+
+                <div class="thumbnail">
+
+                   <div class="caption-full">
+                        <h4 class="pull-right">Цена <strong>@Price_GP руб.</strong></h4>
+                        <h4><a href="#"><strong>@Naimenovanie_GP</strong></a></h4>
+                        <p>@Opisanie_GP</p>
+                        <p>Для заказа позвоните: 8(950) 480-7499, 
+                            <a href="mailto:bio@zooOpt72.ru?subject=Сайт%20Zoo%20Opt72"> Или Напишите 
+                                нам на e-mail: bio@zooOpt72.ru </a>
+                        </p>
+                    </div>
+    
+                    <img class="img-responsive" src=@Picture_GP alt="ZooOpt72.ru, телефон: 8 (950)480-7499, bio@zooOpt72.ru">
+                     
+                    <p>Для заказа позвоните: 8(950) 480-7499, 
+                            <a href="mailto:bio@zooOpt72.ru?subject=Сайт%20Zoo%20Opt72"> Или Напишите 
+                                нам на e-mail: bio@zooOpt72.ru </a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <div class="container">
+        <!-- Footer -->
+        @RenderPage("footer.cshtml")  
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+﻿@{
+    
+  <!-- vybiraem 3 goriachix tovara dlia otobragenia na glavnom ekrane -->
+    List<string> Ident_GP = new List<string>(); 
+    List<string> Naimenovanie_GP = new List<string>();
+    List<string> Price_GP  = new List<string>(); 
+    List<string> Category_GP  = new List<string>(); 
+    List<string> Opisanie_GP  = new List<string>(); 
+    List<string> Picture_GP  = new List<string>();   
+
+    var db = Database.Open("zooopt72_v1");
+    var bb1=db.Query("SELECT * FROM Stocks");
+
+    foreach (var b in bb1)
+    {
+        Ident_GP.Add(b.Ident.ToString());
+        Naimenovanie_GP.Add(b.ProductName.ToString());
+        Price_GP.Add(b.Price.ToString());
+        Category_GP.Add(b.Catecory.ToString());
+        Opisanie_GP.Add(b.Description.ToString()); 
+        Picture_GP.Add("image//Stocks_pic//"+b.ImagePatch.ToString()); 
+    }
+       
+    int [] random_stocks = new int [] {0,5,6};
+    var Rnd = new Random();
+
+    for (var i=0;i<3;i++){
+        random_stocks[i] = Rnd.Next(0,Naimenovanie_GP.Count);
+        for (var j=0;j<i;j++){
+            if (random_stocks[j] == random_stocks[i]){
+                i--;
+                break;
+            }
+                
+        }
+    }
+   
+}
+
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+        <meta charset="utf-8" />
+        <title>Самое нужное и только для Кошек и Котов</title>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Дима Люкин: dw_luking@mail.ru">
+
+        <!-- Bootstrap Core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="css/shop-homepage.css" rel="stylesheet">
+
+    </head>
+    
+    <body>
+
+        <!-- Page Content -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <a class="lead" href="Page2_vybor_tovara.cshtml?Ctgr_num=0"><br>Для Котов и Кошечек:</a>
+ 
+                    <div class="list-group">
+                        <a href="Page2_vybor_tovara.cshtml?Ctgr_num=1" class="list-group-item">Корма и Витамины</a>
+                        <a href="Page2_vybor_tovara.cshtml?Ctgr_num=3" class="list-group-item">Когтеточки и Игрушки</a>
+                        <a href="Page2_vybor_tovara.cshtml?Ctgr_num=2" class="list-group-item">Средства ухода и гигиены</a>
+                        <a href="Page2_vybor_tovara.cshtml?Ctgr_num=4" class="list-group-item">Наполнители и Совочки</a>
+                        <a href="Page2_vybor_tovara.cshtml?Ctgr_num=5" class="list-group-item">Миски и Переноски</a>
+                    </div>
+                    
+                    <p class="lead"><br>
+                        Звоните:<br>
+                    8 (950) 480-7499<br>
+                    <br>
+                        Пишите:
+                    <br>            
+                     bio@zooOpt72.ru</p>
+
+                    <a href="mailto:bio@zooOpt72.ru?subject=Сайт%20Zoo%20Opt72">Напишите нам</a>
+                    <p class="lead"><br>Вы Заказывайте, а мы привезем :)</p>
+
+
+                </div>
+
+                <div class="col-md-9">
+                    <div class="row carousel-holder">
+                        <div class="col-md-12">
+                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                </ol>
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <img class="slide-image" src="image//Contacts_Screen1.png" alt="ZooOpt72.ru, телефон: 8 (950)480-7499, bio@zooOpt72.ru">
+                                    </div>
+                                    <div class="item">
+                                        <img class="slide-image" src="image//Contacts_Screen2.png" alt="ZooOpt72.ru, телефон: 8 (950)480-7499, bio@zooOpt72.ru">
+                                    </div>
+                                    <div class="item">
+                                        <img class="slide-image" src="image//Contacts_Screen3.png" alt="ZooOpt72.ru, телефон: 8 (950)480-7499, bio@zooOpt72.ru">
+                                    </div>
+                                </div>
+                                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h3>  Горячие Предложения</h3>
+                            @for(var i=0;i<3;i++){
+                                <div class="col-sm-4 col-lg-4 col-md-4">
+                                    <div class="thumbnail">
+                                        <img src=@Picture_GP[random_stocks[i]] alt="Звоните, заказывайте: 8(950) 480-7499">
+                                        <div class="caption">
+                                           
+                                            <h4><a href="Page3_tovar.cshtml?Idnt=@Ident_GP[random_stocks[i]]"> @Naimenovanie_GP[random_stocks[i]]</a></h4>
+                                            <h4 class="pull-right"> @Price_GP[random_stocks[i]] р.</h4>
+                                            <p>@Opisanie_GP[random_stocks[i]]</p>
+                                        </div>
+                                        <div class="ratings">
+                                            <p class="pull-right">312 просмотров</p>
+                                            <p>
+                                                <span class="glyphicon glyphicon-star"></span>
+                                                <span class="glyphicon glyphicon-star"></span>
+                                                <span class="glyphicon glyphicon-star"></span>
+                                                <span class="glyphicon glyphicon-star"></span>
+                                                <span class="glyphicon glyphicon-star-empty"></span>
+                                            </p>
+                                        </div>
+                                    </div>   
+                                </div>
+                            }
+                    
+                    </div>
+                </div>
+            </div>
+                         
+        </div>
+       
+         <!-- Footer -->
+        <div class="container">
+           @RenderPage("footer.cshtml")  
+        </div>
+
+        <!-- jQuery -->
+        <script src="js/jquery.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>

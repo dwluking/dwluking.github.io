@@ -1,0 +1,32 @@
+Rabota s DB SQLITE
+
+1. Dostaem vse zapisi iz BD i zapisyvaem v otdelnye listy. 
+   Iz moei programmy ZooOpt72 v Webmatrix
+
+    List<string> Naimenovanie_GP = new List<string>();
+    List<string> Price_GP  = new List<string>(); 
+    List<string> Category_GP  = new List<string>(); 
+    List<string> Opisanie_GP  = new List<string>(); 
+    List<string> Picture_GP  = new List<string>();   
+
+    var db = Database.Open("zooopt72_v1");
+    var bb1=db.Query("SELECT * FROM Stocks");
+
+    foreach (var b in bb1)
+    {
+        Naimenovanie_GP.Add(b.ProductName.ToString());
+        Price_GP.Add(b.Price.ToString());
+        Category_GP.Add(b.Catecory.ToString());
+        Opisanie_GP.Add(b.Description.ToString()); 
+        Picture_GP.Add(b.ImagePatch.ToString()); 
+    }
+
+2.  Vyborka iz bazy po kriteriy. Kriterii peredaetsia pri vyzove
+
+HTML:
+    <a href="Page2_vybor_tovara.cshtml?Ctgr_num=1" class="list-group-item">Корма и Витамины</a>
+C#:
+    string Ctgr_num=Request["Ctgr_num"];
+    
+    var db = Database.Open("zooopt72_v1");
+    var bb1=db.Query("SELECT * FROM Stocks WHERE Catecory='"+Ctgr_num+"'");
